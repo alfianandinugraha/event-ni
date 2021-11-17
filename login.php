@@ -1,3 +1,17 @@
+<?php
+$method = $_SERVER['REQUEST_METHOD'];
+
+function loginAdmin() {
+  $username = $_POST['username'];
+  $password = $_POST['password'];
+  header('Location: /');
+}
+
+if ($method == "POST") {
+  loginAdmin();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,11 +49,11 @@
       <form method="POST" action="login.php" class="col s12 l8 xl4 form-login">
         <h4 class="center-align">Login Admin</h4>
         <div class="input-field">
-          <input type="text" name="input-username" id="input-username">
+          <input type="text" name="username" id="input-username">
           <label for="input-username">Username</label>
         </div>
         <div class="input-field">
-          <input type="password" name="input-password" id="input-password">
+          <input type="password" name="password" id="input-password">
           <label for="input-password">Password</label>
         </div>
         <button class="btn waves-effect waves-light btn-login">Login</button>
