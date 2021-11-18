@@ -16,7 +16,7 @@ if ($method == "POST") {
 <html lang="en">
 <head>
   <?php include('./layouts/head.php') ?>
-  <title>Login Admin - Eventni</title>
+  <title>Login - EventNi</title>
   <style>
     .btn-login {
       width: 100%;
@@ -47,10 +47,10 @@ if ($method == "POST") {
   <main class="container container-center">
     <div class="row row-center">
       <form method="POST" action="login.php" class="col s12 l8 xl4 form-login">
-        <h4 class="center-align">Login Admin</h4>
+        <h4 class="center-align">Login</h4>
         <div class="input-field">
           <input type="text" name="username" id="input-username">
-          <label for="input-username">Username</label>
+          <label for="input-username">Email</label>
         </div>
         <div class="input-field">
           <input type="password" name="password" id="input-password">
