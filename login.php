@@ -1,4 +1,13 @@
 <?php
+session_start();
+include('./utils/auth.php');
+
+if (isset($_SESSION['login']) && $_SESSION['login']) {
+  header('Location: /');
+} else {
+  Auth::logout();
+}
+
 $method = $_SERVER['REQUEST_METHOD'];
 
 $email = "";
@@ -8,7 +17,6 @@ $isUserFound = true;
 if ($method == "POST") {
   include('./db/mysql.php');
   include('./utils/key.php');
-  include('./utils/auth.php');
   include('./helpers/debug.php');
 
   $email = $_POST['email'];
@@ -21,7 +29,7 @@ if ($method == "POST") {
   if (count($result) == 0) {
     $isUserFound = false;
   } else {
-    Auth::login(Key::encrypt($email));
+    Auth::login(Key::encrypt($result[0]['participant_id']));
     header('Location: /');
   }
 }

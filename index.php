@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (!isset($_SESSION['login'])) {
+  header("Location: /login.php");
+}
+
 $events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 ?>
 <!DOCTYPE html>
