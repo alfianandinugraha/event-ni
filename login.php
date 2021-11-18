@@ -1,14 +1,27 @@
 <?php
 $method = $_SERVER['REQUEST_METHOD'];
 
-function loginAdmin() {
+$email = "";
+$password = "";
+
+$isUserFound = true;
+if ($method == "POST") {
+  include('./db/mysql.php');
+  include('./utils/encrypt.php');
+  include('./helpers/debug.php');
+
   $email = $_POST['email'];
   $password = $_POST['password'];
-  header('Location: /');
-}
 
-if ($method == "POST") {
-  loginAdmin();
+  $encryptedPassword = Encrypt::generate($password);
+  $query = "SELECT participant_id FROM participants WHERE email = '$email' AND password = '$encryptedPassword'";
+  $result = $mysql->query($query)->fetch_all(MYSQLI_ASSOC);
+
+  if (count($result) == 0) {
+    $isUserFound = false;
+  } else {
+    header('Location: /');
+  }
 }
 ?>
 
@@ -49,7 +62,7 @@ if ($method == "POST") {
       <form method="POST" action="login.php" class="col s12 l8 xl4 form-login">
         <h4 class="center-align">Login</h4>
         <div class="input-field">
-          <input type="email" name="email" id="input-email">
+          <input type="email" name="email" id="input-email" value="<?= $email ?>">
           <label for="input-email">Email</label>
         </div>
         <div class="input-field">
@@ -65,4 +78,9 @@ if ($method == "POST") {
       </form>
     </div>
   </main>
+  <?php if(!$isUserFound) { ?>
+    <script>
+      swal("Error", "User tidak ditemukan", "error");
+    </script>
+  <?php } ?>
 </body>
