@@ -1,7 +1,6 @@
 <?php
 include('./helpers/debug.php');
 include('./db/mysql.php');
-include('./utils/encrypt.php');
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -17,7 +16,7 @@ if ($method === 'POST') {
   } else {
     $password = $_POST['password'];
     $fullname = $_POST['fullname'];
-    $encryptedPassword = Encrypt::generate($password);
+    $encryptedPassword = Key::generate($password);
     $queryInsert = "
       INSERT INTO participants(email, password, full_name) VALUES ('$email', '$encryptedPassword', '$fullname')
     ";

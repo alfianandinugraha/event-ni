@@ -7,19 +7,21 @@ $password = "";
 $isUserFound = true;
 if ($method == "POST") {
   include('./db/mysql.php');
-  include('./utils/encrypt.php');
+  include('./utils/key.php');
+  include('./utils/auth.php');
   include('./helpers/debug.php');
 
   $email = $_POST['email'];
   $password = $_POST['password'];
 
-  $encryptedPassword = Encrypt::generate($password);
+  $encryptedPassword = Key::generate($password);
   $query = "SELECT participant_id FROM participants WHERE email = '$email' AND password = '$encryptedPassword'";
   $result = $mysql->query($query)->fetch_all(MYSQLI_ASSOC);
 
   if (count($result) == 0) {
     $isUserFound = false;
   } else {
+    Auth::login(Key::encrypt($email));
     header('Location: /');
   }
 }
