@@ -2,7 +2,7 @@
 $method = $_SERVER['REQUEST_METHOD'];
 
 function loginAdmin() {
-  $username = $_POST['username'];
+  $email = $_POST['email'];
   $password = $_POST['password'];
   header('Location: /');
 }
@@ -49,8 +49,8 @@ if ($method == "POST") {
       <form method="POST" action="login.php" class="col s12 l8 xl4 form-login">
         <h4 class="center-align">Login</h4>
         <div class="input-field">
-          <input type="text" name="username" id="input-username">
-          <label for="input-username">Email</label>
+          <input type="email" name="email" id="input-email">
+          <label for="input-email">Email</label>
         </div>
         <div class="input-field">
           <input type="password" name="password" id="input-password">
