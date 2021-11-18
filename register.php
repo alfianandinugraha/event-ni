@@ -1,11 +1,20 @@
 <?php
-include('./helpers/debug.php');
-include('./db/mysql.php');
+session_start();
+include('./utils/auth.php');
+
+if (isset($_SESSION['login']) && $_SESSION['login']) {
+  header('Location: /');
+} else {
+  Auth::logout();
+}
 
 $method = $_SERVER['REQUEST_METHOD'];
 
 $isEmailRegistered = false;
 if ($method === 'POST') {
+  include('./db/mysql.php');
+  include('./utils/key.php');
+
   $email = $_POST['email'];
   
   $querySelect = "SELECT email FROM participants WHERE email = '$email'";
@@ -21,6 +30,14 @@ if ($method === 'POST') {
       INSERT INTO participants(email, password, full_name) VALUES ('$email', '$encryptedPassword', '$fullname')
     ";
     $mysql->query($queryInsert);
+
+    $queryGetUser = "SELECT participant_id FROM participants WHERE email = '$email'";
+    $result = $mysql->query($queryGetUser)->fetch_all(MYSQLI_ASSOC);
+
+    $participantId = $result[0]['participant_id'];
+    Auth::login(Key::encrypt($participantId));
+
+    header('Location: /');
   }
 
   $mysql->close();
