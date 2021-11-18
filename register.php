@@ -1,3 +1,29 @@
+<?php
+include('./helpers/debug.php');
+include('./db/mysql.php');
+
+$method = $_SERVER['REQUEST_METHOD'];
+
+$isEmailRegistered = false;
+if ($method === 'POST') {
+  $fullname = $_POST['fullname'];
+  $email = $_POST['email'];
+  $password = $_POST['password'];
+
+  $querySelect = "SELECT email FROM participants WHERE email = '$email'";
+  $result = $mysql->query($querySelect)->fetch_all(MYSQLI_ASSOC);
+
+  if ($result != 0) {
+    $isEmailRegistered = true;
+  } else {
+    $queryInsert = "INSERT INTO participants(email, password, full_name) VALUES ('$email', '$password', '$fullname')";
+    $mysql->query($queryInsert);
+  }
+
+  $mysql->close();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,7 +58,7 @@
 <body>
   <main class="container container-center">
     <div class="row row-center">
-      <form method="POST" action="login.php" class="col s12 l8 xl4 form-login" id="form-register">
+      <form method="POST" action="register.php" class="col s12 l8 xl4 form-login" id="form-register">
         <h4 class="center-align">Register</h4>
         <div class="input-field">
           <input type="text" name="fullname" id="input-fullname">
@@ -59,6 +85,11 @@
       </form>
     </div>
   </main>
+  <?php if($isEmailRegistered) { ?>
+    <script>
+      swal("Error", "Email sudah terdaftar", "error");
+    </script>
+  <?php } ?>
   <script>
   const form = document.getElementById('form-register')
   form.addEventListener('submit', (e) => {
