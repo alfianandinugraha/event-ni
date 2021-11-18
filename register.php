@@ -32,11 +32,11 @@
 <body>
   <main class="container container-center">
     <div class="row row-center">
-      <form method="POST" action="login.php" class="col s12 l8 xl4 form-login">
+      <form method="POST" action="login.php" class="col s12 l8 xl4 form-login" id="form-register">
         <h4 class="center-align">Register</h4>
         <div class="input-field">
-          <input type="text" name="email" id="input-email">
-          <label for="input-email">Nama Lengkap</label>
+          <input type="text" name="fullname" id="input-fullname">
+          <label for="input-fullname">Nama Lengkap</label>
         </div>
         <div class="input-field">
           <input type="email" name="email" id="input-email">
@@ -47,7 +47,7 @@
           <label for="input-password">Password</label>
         </div>
         <div class="input-field">
-          <input type="password" name="password" id="input-password">
+          <input type="password" name="re-password" id="input-re-password">
           <label for="input-password">Ulangi Password</label>
         </div>
         <div class="input-field">
@@ -59,4 +59,26 @@
       </form>
     </div>
   </main>
+  <script>
+  const form = document.getElementById('form-register')
+  form.addEventListener('submit', (e) => {
+    const fullname = document.getElementById('input-fullname').value
+    const email = document.getElementById('input-email').value
+    const password = document.getElementById('input-password').value
+    const rePassword = document.getElementById('input-re-password').value
+
+    if (!fullname || !email | !password || !rePassword) {
+      swal("Error", "Harap isi form diatas", "error");
+      e.preventDefault()
+      return
+    }
+
+    if (password !== rePassword) {
+      swal("Error", "Password tidak sama", "error");
+      e.preventDefault()
+      return
+    }
+  })
+  </script>
 </body>
+</html>
