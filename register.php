@@ -1,22 +1,26 @@
 <?php
 include('./helpers/debug.php');
 include('./db/mysql.php');
+include('./utils/encrypt.php');
 
 $method = $_SERVER['REQUEST_METHOD'];
 
 $isEmailRegistered = false;
 if ($method === 'POST') {
-  $fullname = $_POST['fullname'];
   $email = $_POST['email'];
-  $password = $_POST['password'];
-
+  
   $querySelect = "SELECT email FROM participants WHERE email = '$email'";
   $result = $mysql->query($querySelect)->fetch_all(MYSQLI_ASSOC);
 
-  if ($result != 0) {
+  if (count($result) != 0) {
     $isEmailRegistered = true;
   } else {
-    $queryInsert = "INSERT INTO participants(email, password, full_name) VALUES ('$email', '$password', '$fullname')";
+    $password = $_POST['password'];
+    $fullname = $_POST['fullname'];
+    $encryptedPassword = Encrypt::generate($password);
+    $queryInsert = "
+      INSERT INTO participants(email, password, full_name) VALUES ('$email', '$encryptedPassword', '$fullname')
+    ";
     $mysql->query($queryInsert);
   }
 
