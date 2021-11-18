@@ -56,7 +56,12 @@ if ($method == "POST") {
           <input type="password" name="password" id="input-password">
           <label for="input-password">Password</label>
         </div>
-        <button class="btn waves-effect waves-light btn-login">Login</button>
+        <div class="input-field">
+          <button class="btn waves-effect waves-light btn-login">Login</button>
+        </div>
+        <div class="input-field">
+          <p class="center-align">Belum punya akun ? <a href="register.php">Register</a></p>
+        </div>
       </form>
     </div>
   </main>
