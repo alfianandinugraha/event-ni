@@ -18,8 +18,14 @@ if ($method == 'POST') {
   header('Location: /');
 }
 
-$queryGetEvents = "SELECT event_id, title FROM events";
+$queryGetEvents = "
+SELECT event_id, title FROM events
+WHERE events.event_id NOT IN (
+	SELECT transactions.event_id FROM transactions
+  WHERE transactions.user_id = $userId
+)";
 $events = $mysql->query($queryGetEvents)->fetch_all(MYSQLI_ASSOC);
+$isEventsEmpty = count($events) == 0;
 
 $queryGetTransactions = "
   SELECT events.title, events.description, transactions.transaction_id FROM `events`
@@ -88,8 +94,8 @@ $joinedEvents = $mysql->query($queryGetTransactions)->fetch_all(MYSQLI_ASSOC);
       <form class="col s12 l4 xl3" method="POST">
         <h5 class="form-heading">Pendaftaran Event</h5>
         <div class="input-field">
-          <select name="event_id" id="">
-            <option disabled selected>Pilih Event</option>
+          <select name="event_id" id="" <?= $isEventsEmpty ? 'disabled' : '' ?>>
+            <option disabled selected><?= $isEventsEmpty ? "Event Kosong" : "Pilih Event" ?></option>
             <?php foreach ($events as $event) { ?>
             <option value="<?= $event['event_id'] ?>"><?= $event['title'] ?></option>
             <?php } ?>
@@ -97,7 +103,11 @@ $joinedEvents = $mysql->query($queryGetTransactions)->fetch_all(MYSQLI_ASSOC);
           <label for="">Pilih Event</label>
         </div>
         <div class="input-field">
-          <button class="btn waves-effect waves-light">Daftar Event<i class="material-icons right">done</i></button>
+          <button 
+            class="btn waves-effect waves-light" <?= $isEventsEmpty ? 'disabled' : '' ?>
+          >
+            Daftar Event<i class="material-icons right">done</i>
+          </button>
         </div>
       </form>
       <div class="col s12 l8 xl9">
