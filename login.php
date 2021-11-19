@@ -23,13 +23,13 @@ if ($method == "POST") {
   $password = $_POST['password'];
 
   $encryptedPassword = Key::generate($password);
-  $query = "SELECT participant_id FROM participants WHERE email = '$email' AND password = '$encryptedPassword'";
+  $query = "SELECT user_id FROM users WHERE email = '$email' AND password = '$encryptedPassword'";
   $result = $mysql->query($query)->fetch_all(MYSQLI_ASSOC);
 
   if (count($result) == 0) {
     $isUserFound = false;
   } else {
-    Auth::login(Key::encrypt($result[0]['participant_id']));
+    Auth::login(Key::encrypt($result[0]['user_id']));
     header('Location: /');
   }
 }

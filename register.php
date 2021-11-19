@@ -17,7 +17,7 @@ if ($method === 'POST') {
 
   $email = $_POST['email'];
   
-  $querySelect = "SELECT email FROM participants WHERE email = '$email'";
+  $querySelect = "SELECT email FROM users WHERE email = '$email'";
   $result = $mysql->query($querySelect)->fetch_all(MYSQLI_ASSOC);
 
   if (count($result) != 0) {
@@ -27,14 +27,14 @@ if ($method === 'POST') {
     $fullname = $_POST['fullname'];
     $encryptedPassword = Key::generate($password);
     $queryInsert = "
-      INSERT INTO participants(email, password, full_name) VALUES ('$email', '$encryptedPassword', '$fullname')
+      INSERT INTO users(email, password, full_name) VALUES ('$email', '$encryptedPassword', '$fullname')
     ";
     $mysql->query($queryInsert);
 
-    $queryGetUser = "SELECT participant_id FROM participants WHERE email = '$email'";
+    $queryGetUser = "SELECT user_id FROM users WHERE email = '$email'";
     $result = $mysql->query($queryGetUser)->fetch_all(MYSQLI_ASSOC);
 
-    $participantId = $result[0]['participant_id'];
+    $participantId = $result[0]['user_id'];
     Auth::login(Key::encrypt($participantId));
 
     header('Location: /');
