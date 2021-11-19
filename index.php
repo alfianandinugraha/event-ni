@@ -9,6 +9,15 @@ include('./utils/key.php');
 include('./helpers/debug.php');
 $userId = Key::decrypt($_COOKIE['user']);
 
+$method = $_SERVER['REQUEST_METHOD'];
+
+if ($method == 'POST') {
+  $eventId = $_POST['event_id'];
+  $queryInsertTransaction = "INSERT INTO transactions(event_id, user_id) VALUES ('$eventId', '$userId')";
+  $mysql->query($queryInsertTransaction);
+  header('Location: /');
+}
+
 $queryGetEvents = "SELECT event_id, title FROM events";
 $events = $mysql->query($queryGetEvents)->fetch_all(MYSQLI_ASSOC);
 $joinedEvents = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
