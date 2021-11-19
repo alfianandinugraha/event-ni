@@ -20,7 +20,13 @@ if ($method == 'POST') {
 
 $queryGetEvents = "SELECT event_id, title FROM events";
 $events = $mysql->query($queryGetEvents)->fetch_all(MYSQLI_ASSOC);
-$joinedEvents = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+$queryGetTransactions = "
+  SELECT events.title, events.description, transactions.transaction_id FROM `events`
+  INNER JOIN transactions ON events.event_id = transactions.event_id
+  WHERE transactions.user_id = $userId
+";
+$joinedEvents = $mysql->query($queryGetTransactions)->fetch_all(MYSQLI_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -97,19 +103,22 @@ $joinedEvents = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
       <div class="col s12 l8 xl9">
         <div class="row">
           <div class="col s12">
-            <h5>Event yang kamu ikuti</h5>
+            <h5><?= count($joinedEvents) == 0 ? "Tidak ada event yang kamu ikuti" : "Event yang kamu ikuti" ?></h5>
           </div>
           <?php foreach($joinedEvents as $event) { ?>
           <div class="col s12 l6 xl4">
             <div class="card">
               <div class="card-content">
-                <div class="card-title">Belajar PHP Dasar</div>
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Earum quod id laborum maiores odit magnam at itaque repellat doloremque vero!</p>
+                <div class="card-title"><?= $event['title'] ?></div>
+                <p><?= $event['description'] ?></p>
               </div>
               <div class="card-action">
-                <button class="btn waves-effect waves-light red">
-                  <i class="material-icons">delete</i>
-                </button>
+                <form action="/">
+                  <input type="hidden" name="transaction_id" value="<?= $event['transaction_id'] ?>">
+                  <button class="btn waves-effect waves-light red">
+                    <i class="material-icons">delete</i>
+                  </button>
+                </form>
               </div>
             </div>
           </div>
