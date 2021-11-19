@@ -13,13 +13,20 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method == 'POST') {
   $action = $_POST['action'];
+  
+  if ($action == 'DELETE_TRANSACTION') {
+    $transactionId = $_POST['transaction_id'];
+    $queryDeleteTransaction = "DELETE FROM transactions WHERE transaction_id = $transactionId AND user_id = $userId";
+    $mysql->query($queryDeleteTransaction);
+  }
 
   if ($action == 'INSERT_TRANSACTION') {
     $eventId = $_POST['event_id'];
     $queryInsertTransaction = "INSERT INTO transactions(event_id, user_id) VALUES ('$eventId', '$userId')";
     $mysql->query($queryInsertTransaction);
-    header('Location: /');
   }
+
+  header('Location: /');
 }
 
 $queryGetEvents = "
@@ -37,6 +44,8 @@ $queryGetTransactions = "
   WHERE transactions.user_id = $userId
 ";
 $joinedEvents = $mysql->query($queryGetTransactions)->fetch_all(MYSQLI_ASSOC);
+
+$mysql->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -128,8 +137,9 @@ $joinedEvents = $mysql->query($queryGetTransactions)->fetch_all(MYSQLI_ASSOC);
                 <p><?= $event['description'] ?></p>
               </div>
               <div class="card-action">
-                <form action="/">
+                <form action="/" method="POST">
                   <input type="hidden" name="transaction_id" value="<?= $event['transaction_id'] ?>">
+                  <input type="hidden" name="action" value="DELETE_TRANSACTION">
                   <button class="btn waves-effect waves-light red">
                     <i class="material-icons">delete</i>
                   </button>
