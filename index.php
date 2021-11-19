@@ -12,10 +12,14 @@ $userId = Key::decrypt($_COOKIE['user']);
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method == 'POST') {
-  $eventId = $_POST['event_id'];
-  $queryInsertTransaction = "INSERT INTO transactions(event_id, user_id) VALUES ('$eventId', '$userId')";
-  $mysql->query($queryInsertTransaction);
-  header('Location: /');
+  $action = $_POST['action'];
+
+  if ($action == 'INSERT_TRANSACTION') {
+    $eventId = $_POST['event_id'];
+    $queryInsertTransaction = "INSERT INTO transactions(event_id, user_id) VALUES ('$eventId', '$userId')";
+    $mysql->query($queryInsertTransaction);
+    header('Location: /');
+  }
 }
 
 $queryGetEvents = "
@@ -92,6 +96,7 @@ $joinedEvents = $mysql->query($queryGetTransactions)->fetch_all(MYSQLI_ASSOC);
   <main class="container">
     <div class="row">
       <form class="col s12 l4 xl3" method="POST">
+        <input type="hidden" name="action" value="INSERT_TRANSACTION">
         <h5 class="form-heading">Pendaftaran Event</h5>
         <div class="input-field">
           <select name="event_id" id="" <?= $isEventsEmpty ? 'disabled' : '' ?>>
