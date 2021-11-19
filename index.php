@@ -4,7 +4,14 @@ if (!isset($_SESSION['login'])) {
   header("Location: /login.php");
 }
 
-$events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+include('./db/mysql.php');
+include('./utils/key.php');
+include('./helpers/debug.php');
+$userId = Key::decrypt($_COOKIE['user']);
+
+$queryGetEvents = "SELECT event_id, title FROM events";
+$events = $mysql->query($queryGetEvents)->fetch_all(MYSQLI_ASSOC);
+$joinedEvents = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -68,9 +75,9 @@ $events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         <div class="input-field">
           <select name="event_id" id="">
             <option disabled selected>Pilih Event</option>
-            <option value="PHP1">Belajar PHP Dasar</option>
-            <option value="JS1">Javascript untuk Front-end</option>
-            <option value="JS2">Javascript untuk Backend-end</option>
+            <?php foreach ($events as $event) { ?>
+            <option value="<?= $event['event_id'] ?>"><?= $event['title'] ?></option>
+            <?php } ?>
           </select>
           <label for="">Pilih Event</label>
         </div>
@@ -83,7 +90,7 @@ $events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
           <div class="col s12">
             <h5>Event yang kamu ikuti</h5>
           </div>
-          <?php foreach($events as $event) { ?>
+          <?php foreach($joinedEvents as $event) { ?>
           <div class="col s12 l6 xl4">
             <div class="card">
               <div class="card-content">
