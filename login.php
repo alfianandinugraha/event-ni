@@ -67,6 +67,7 @@ if ($method == "POST") {
   </style>
 </head>
 <body>
+  <?php include('./layouts/ribbon.php') ?>
   <main class="container container-center">
     <div class="row row-center">
       <form method="POST" action="login.php" class="col s12 l8 xl4 form-login">
