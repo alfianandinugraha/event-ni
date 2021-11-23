@@ -15,7 +15,7 @@ if ($method === 'POST') {
   include('./db/mysql.php');
   include('./utils/key.php');
 
-  $email = $_POST['email'];
+  $email = $mysql->real_escape_string($_POST['email']);
   
   $querySelect = "SELECT email FROM users WHERE email = '$email'";
   $result = $mysql->query($querySelect)->fetch_all(MYSQLI_ASSOC);
@@ -23,8 +23,8 @@ if ($method === 'POST') {
   if (count($result) != 0) {
     $isEmailRegistered = true;
   } else {
-    $password = $_POST['password'];
-    $fullname = $_POST['fullname'];
+    $password = $mysql->real_escape_string($_POST['password']);
+    $fullname = $mysql->real_escape_string($_POST['fullname']);
     $encryptedPassword = Key::generate($password);
     $queryInsert = "
       INSERT INTO users(email, password, full_name) VALUES ('$email', '$encryptedPassword', '$fullname')

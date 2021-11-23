@@ -19,8 +19,8 @@ if ($method == "POST") {
   include('./utils/key.php');
   include('./helpers/debug.php');
 
-  $email = $_POST['email'];
-  $password = $_POST['password'];
+  $email = $mysql->real_escape_string($_POST['email']);
+  $password = $mysql->real_escape_string($_POST['password']);
 
   $encryptedPassword = Key::generate($password);
   $query = "SELECT user_id FROM users WHERE email = '$email' AND password = '$encryptedPassword'";

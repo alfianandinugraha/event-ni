@@ -12,16 +12,16 @@ $userId = Key::decrypt($_COOKIE['user']);
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method == 'POST') {
-  $action = $_POST['action'];
+  $action = $mysql->real_escape_string($_POST['action']);
   
   if ($action == 'DELETE_TRANSACTION') {
-    $transactionId = $_POST['transaction_id'];
+    $transactionId = $mysql->real_escape_string($_POST['transaction_id']);
     $queryDeleteTransaction = "DELETE FROM transactions WHERE transaction_id = $transactionId AND user_id = $userId";
     $mysql->query($queryDeleteTransaction);
   }
 
   if ($action == 'INSERT_TRANSACTION') {
-    $eventId = $_POST['event_id'];
+    $eventId = $mysql->real_escape_string($_POST['event_id']);
     $queryInsertTransaction = "INSERT INTO transactions(event_id, user_id) VALUES ('$eventId', '$userId')";
     $mysql->query($queryInsertTransaction);
   }
