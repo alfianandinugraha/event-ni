@@ -70,7 +70,7 @@ if ($method == "POST") {
   <?php include('./layouts/ribbon.php') ?>
   <main class="container container-center">
     <div class="row row-center">
-      <form method="POST" action="login.php" class="col s12 l8 xl4 form-login">
+      <form method="POST" action="login.php" class="col s12 l8 xl4 form-login" id="form-login">
         <h4 class="center-align">Login</h4>
         <div class="input-field">
           <input type="email" name="email" id="input-email" value="<?= $email ?>">
@@ -94,4 +94,18 @@ if ($method == "POST") {
       swal("Error", "User tidak ditemukan", "error");
     </script>
   <?php } ?>
+  <script>
+    const formEl = document.getElementById('form-login')
+    formEl.addEventListener('submit', (e) => {
+      e.preventDefault()
+      let email = e.target.email.value
+      let password = e.target.password.value
+      email = DOMPurify.sanitize(email)
+      password = DOMPurify.sanitize(password)
+
+      e.target.password.value = password
+      e.target.email.value = email
+      formEl.submit()
+    })
+  </script>
 </body>

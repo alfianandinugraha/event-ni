@@ -114,22 +114,30 @@ if ($method === 'POST') {
   <script>
   const form = document.getElementById('form-register')
   form.addEventListener('submit', (e) => {
-    const fullname = document.getElementById('input-fullname').value
-    const email = document.getElementById('input-email').value
-    const password = document.getElementById('input-password').value
-    const rePassword = document.getElementById('input-re-password').value
+    e.preventDefault()
+    let fullname = document.getElementById('input-fullname').value
+    let email = document.getElementById('input-email').value
+    let password = document.getElementById('input-password').value
+    let rePassword = document.getElementById('input-re-password').value
 
     if (!fullname || !email | !password || !rePassword) {
       swal("Error", "Harap isi form diatas", "error");
-      e.preventDefault()
       return
     }
 
     if (password !== rePassword) {
       swal("Error", "Password tidak sama", "error");
-      e.preventDefault()
       return
     }
+
+    fullname = DOMPurify.sanitize(fullname)
+    email = DOMPurify.sanitize(email)
+    password = DOMPurify.sanitize(password)
+
+    e.target.fullname.value = fullname
+    e.target.password.value = password
+    e.target.email.value = email
+    form.submit()
   })
   </script>
 </body>
