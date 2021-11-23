@@ -2,6 +2,9 @@
 session_start();
 include('./utils/auth.php');
 
+/**
+ * Mengecek apakah user sedang login atau belum
+ */
 if (isset($_SESSION['login']) && $_SESSION['login']) {
   header('Location: /');
 } else {
@@ -17,6 +20,9 @@ if ($method === 'POST') {
 
   $email = $mysql->real_escape_string($_POST['email']);
   
+  /**
+ * Mencari user berdasarkan email
+ */
   $querySelect = "SELECT email FROM users WHERE email = '$email'";
   $result = $mysql->query($querySelect)->fetch_all(MYSQLI_ASSOC);
 
@@ -26,6 +32,10 @@ if ($method === 'POST') {
     $password = $mysql->real_escape_string($_POST['password']);
     $fullname = $mysql->real_escape_string($_POST['fullname']);
     $encryptedPassword = Key::generate($password);
+
+    /**
+     * Menambahkan user kedalam database
+     */
     $queryInsert = "
       INSERT INTO users(email, password, full_name) VALUES ('$email', '$encryptedPassword', '$fullname')
     ";
@@ -34,6 +44,9 @@ if ($method === 'POST') {
     $queryGetUser = "SELECT user_id FROM users WHERE email = '$email'";
     $result = $mysql->query($queryGetUser)->fetch_all(MYSQLI_ASSOC);
 
+    /**
+     * Jika sudah berhasil daftar maka user_id akan dibuat menjadi cookie
+     */
     $participantId = $result[0]['user_id'];
     Auth::login(Key::encrypt($participantId));
 

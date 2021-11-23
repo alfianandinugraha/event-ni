@@ -1,5 +1,9 @@
 <?php
 session_start();
+/**
+ * Mengecek apakah user sedang login atau belum
+ * Jika belum login maka akan dialihkan kehalaman login.php
+ */
 if (!isset($_SESSION['login'])) {
   header("Location: /login.php");
 }
@@ -14,12 +18,18 @@ $method = $_SERVER['REQUEST_METHOD'];
 if ($method == 'POST') {
   $action = $mysql->real_escape_string($_POST['action']);
   
+  /**
+   * action DELETE_TRANSACTION digunakan untuk menghapus transaksi
+   */
   if ($action == 'DELETE_TRANSACTION') {
     $transactionId = $mysql->real_escape_string($_POST['transaction_id']);
     $queryDeleteTransaction = "DELETE FROM transactions WHERE transaction_id = $transactionId AND user_id = $userId";
     $mysql->query($queryDeleteTransaction);
   }
 
+  /**
+   * action INSERT_TRANSACTION digunakan untuk menambahkan transaksi
+   */
   if ($action == 'INSERT_TRANSACTION') {
     $eventId = $mysql->real_escape_string($_POST['event_id']);
     $queryInsertTransaction = "INSERT INTO transactions(event_id, user_id) VALUES ('$eventId', '$userId')";
@@ -29,6 +39,9 @@ if ($method == 'POST') {
   header('Location: /');
 }
 
+/**
+ * Mengambil data event dari database
+ */
 $queryGetEvents = "
 SELECT event_id, title FROM events
 WHERE events.event_id NOT IN (
@@ -38,6 +51,9 @@ WHERE events.event_id NOT IN (
 $events = $mysql->query($queryGetEvents)->fetch_all(MYSQLI_ASSOC);
 $isEventsEmpty = count($events) == 0;
 
+/**
+ * Mengambil data event yang sudah diambil oleh user
+ */
 $queryGetTransactions = "
   SELECT events.title, events.description, transactions.transaction_id FROM `events`
   INNER JOIN transactions ON events.event_id = transactions.event_id

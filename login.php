@@ -2,6 +2,9 @@
 session_start();
 include('./utils/auth.php');
 
+/**
+ * Mengecek apakah user sedang login atau belum
+ */
 if (isset($_SESSION['login']) && $_SESSION['login']) {
   header('Location: /');
 } else {
@@ -23,12 +26,19 @@ if ($method == "POST") {
   $password = $mysql->real_escape_string($_POST['password']);
 
   $encryptedPassword = Key::generate($password);
+  /**
+   * Mengecek user menggunakan email dan password
+   */
   $query = "SELECT user_id FROM users WHERE email = '$email' AND password = '$encryptedPassword'";
   $result = $mysql->query($query)->fetch_all(MYSQLI_ASSOC);
 
   if (count($result) == 0) {
     $isUserFound = false;
   } else {
+    /**
+     * Jika user ada maka akan dilakukan session dan cookie dari class Auth
+     * dan dialihkan kehalaman awal
+     */
     Auth::login(Key::encrypt($result[0]['user_id']));
     header('Location: /');
   }
