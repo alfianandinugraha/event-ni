@@ -100,7 +100,9 @@ $mysql->close();
   </nav>
   <ul class="sidenav" id="mobile-demo">
     <li>
-      <button class="btn waves-effect waves-light red">Logout<i class="material-icons right">logout</i></button>
+      <form action="logout.php" method="POST">
+        <button class="btn waves-effect waves-light red">Logout<i class="material-icons right">logout</i></button>
+      </form>
     </li>
   </ul>
   <main class="container">
