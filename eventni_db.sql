@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 23 Nov 2021 pada 16.33
+-- Waktu pembuatan: 24 Nov 2021 pada 02.06
 -- Versi server: 10.4.11-MariaDB
 -- Versi PHP: 8.0.12
 
@@ -18,10 +18,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `eventni-db`
+-- Database: `eventni_db`
 --
-CREATE DATABASE IF NOT EXISTS `eventni-db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `eventni-db`;
+CREATE DATABASE IF NOT EXISTS `eventni_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `eventni_db`;
 
 -- --------------------------------------------------------
 
@@ -38,6 +38,16 @@ CREATE TABLE `events` (
   `location` varchar(1000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data untuk tabel `events`
+--
+
+INSERT INTO `events` (`event_id`, `title`, `description`, `start_date`, `end_date`, `location`) VALUES
+(1, 'Belajar PHP Dasar', 'PHP (PHP: Hypertext Preprocessor) adalah sebuah bahasa pemrograman server side scripting yang bersifat open source', '2021-11-28 19:00:00', '2021-11-28 20:30:00', 'Online'),
+(2, 'Javascript untuk Frontend', 'Front end developer adalah orang yang berperan mengembangkan tampilan situs atau aplikasi melalui HTML, CSS, dan JavaScript.', '2021-11-29 13:00:00', '2021-11-29 16:30:00', 'UTY Kampus 1'),
+(3, 'Mastering Laravel', 'Laravel adalah satu-satunya framework yang membantu Anda untuk memaksimalkan penggunaan PHP di dalam proses pengembangan', '2021-11-25 09:00:00', '2021-11-25 15:00:00', 'UTY Kampus 2'),
+(4, 'Advanced Reactjs', 'React JS adalah library JavaScript yang biasa digunakan saat membangun UI suatu website atau aplikasi web.', '2021-11-26 08:00:00', '2021-11-26 12:00:00', 'UTY Kampus 1');
+
 -- --------------------------------------------------------
 
 --
@@ -51,6 +61,15 @@ CREATE TABLE `transactions` (
   `register_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data untuk tabel `transactions`
+--
+
+INSERT INTO `transactions` (`transaction_id`, `event_id`, `user_id`, `register_at`) VALUES
+(27, 1, 9, '2021-11-24 09:03:01'),
+(28, 1, 10, '2021-11-24 09:03:20'),
+(29, 2, 10, '2021-11-24 09:03:22');
+
 -- --------------------------------------------------------
 
 --
@@ -63,6 +82,14 @@ CREATE TABLE `users` (
   `password` varchar(1000) NOT NULL,
   `full_name` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `users`
+--
+
+INSERT INTO `users` (`user_id`, `email`, `password`, `full_name`) VALUES
+(9, 'admin@admin.com', '54bdaa257bc5147dcb77be20809141bbb51f80dcc6a6a393b1c110ef9b04a606', 'Admin'),
+(10, 'user@user.com', '54bdaa257bc5147dcb77be20809141bbb51f80dcc6a6a393b1c110ef9b04a606', 'User');
 
 --
 -- Indexes for dumped tables
@@ -97,19 +124,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `events`
 --
 ALTER TABLE `events`
-  MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
