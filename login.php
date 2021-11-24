@@ -20,10 +20,11 @@ $isUserFound = true;
 if ($method == "POST") {
   include('./db/mysql.php');
   include('./utils/key.php');
+  include('./utils/sanitize.php');
   include('./helpers/debug.php');
 
-  $email = $mysql->real_escape_string($_POST['email']);
-  $password = $mysql->real_escape_string($_POST['password']);
+  $email = $mysql->real_escape_string(sanitize($_POST['email']));
+  $password = $mysql->real_escape_string(sanitize($_POST['password']));
 
   $encryptedPassword = Key::generate($password);
   /**

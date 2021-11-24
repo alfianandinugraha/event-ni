@@ -17,8 +17,9 @@ $isEmailRegistered = false;
 if ($method === 'POST') {
   include('./db/mysql.php');
   include('./utils/key.php');
+  include('./utils/sanitize.php');
 
-  $email = $mysql->real_escape_string($_POST['email']);
+  $email = $mysql->real_escape_string(sanitize($_POST['email']));
   
   /**
  * Mencari user berdasarkan email
@@ -29,8 +30,8 @@ if ($method === 'POST') {
   if (count($result) != 0) {
     $isEmailRegistered = true;
   } else {
-    $password = $mysql->real_escape_string($_POST['password']);
-    $fullname = $mysql->real_escape_string($_POST['fullname']);
+    $password = $mysql->real_escape_string(sanitize($_POST['password']));
+    $fullname = $mysql->real_escape_string(sanitize($_POST['fullname']));
     $encryptedPassword = Key::generate($password);
 
     /**

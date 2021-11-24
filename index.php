@@ -10,19 +10,20 @@ if (!isset($_SESSION['login'])) {
 
 include('./db/mysql.php');
 include('./utils/key.php');
+include('./utils/sanitize.php');
 include('./helpers/debug.php');
 $userId = Key::decrypt($_COOKIE['user']);
 
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method == 'POST') {
-  $action = $mysql->real_escape_string($_POST['action']);
+  $action = $mysql->real_escape_string(sanitize($_POST['action']));
   
   /**
    * action DELETE_TRANSACTION digunakan untuk menghapus transaksi
    */
   if ($action == 'DELETE_TRANSACTION') {
-    $transactionId = $mysql->real_escape_string($_POST['transaction_id']);
+    $transactionId = $mysql->real_escape_string(sanitize($_POST['transaction_id']));
     $queryDeleteTransaction = "DELETE FROM transactions WHERE transaction_id = $transactionId AND user_id = $userId";
     $mysql->query($queryDeleteTransaction);
   }
@@ -31,7 +32,7 @@ if ($method == 'POST') {
    * action INSERT_TRANSACTION digunakan untuk menambahkan transaksi
    */
   if ($action == 'INSERT_TRANSACTION') {
-    $eventId = $mysql->real_escape_string($_POST['event_id']);
+    $eventId = $mysql->real_escape_string(sanitize($_POST['event_id']));
     $queryInsertTransaction = "INSERT INTO transactions(event_id, user_id) VALUES ('$eventId', '$userId')";
     $mysql->query($queryInsertTransaction);
   }
