@@ -109,9 +109,15 @@ if ($method == "POST") {
   <script>
     const formEl = document.getElementById('form-login')
     formEl.addEventListener('submit', (e) => {
-      e.preventDefault()
+      e.preventDefault()      
       let email = e.target.email.value
       let password = e.target.password.value
+      
+      // Melakukan cek ketika input belum diisi
+      if (!email || !password) {
+        swal("Error", "Harap isi form diatas", "error");
+        return
+      }
 
       // Melakukan sanitize via frontend
       email = DOMPurify.sanitize(email)
