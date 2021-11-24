@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 24 Nov 2021 pada 02.06
+-- Waktu pembuatan: 24 Nov 2021 pada 03.25
 -- Versi server: 10.4.11-MariaDB
 -- Versi PHP: 8.0.12
 
@@ -66,9 +66,8 @@ CREATE TABLE `transactions` (
 --
 
 INSERT INTO `transactions` (`transaction_id`, `event_id`, `user_id`, `register_at`) VALUES
-(27, 1, 9, '2021-11-24 09:03:01'),
-(28, 1, 10, '2021-11-24 09:03:20'),
-(29, 2, 10, '2021-11-24 09:03:22');
+(30, 1, 11, '2021-11-24 10:24:30'),
+(31, 3, 11, '2021-11-24 10:24:33');
 
 -- --------------------------------------------------------
 
@@ -88,8 +87,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `email`, `password`, `full_name`) VALUES
-(9, 'admin@admin.com', '54bdaa257bc5147dcb77be20809141bbb51f80dcc6a6a393b1c110ef9b04a606', 'Admin'),
-(10, 'user@user.com', '54bdaa257bc5147dcb77be20809141bbb51f80dcc6a6a393b1c110ef9b04a606', 'User');
+(11, 'admin@admin.com', 'af82908fed91c5452613304cce0bf3800d0b9c1fd745d22ffec344c52948ee9f', 'Admin');
 
 --
 -- Indexes for dumped tables
@@ -130,13 +128,13 @@ ALTER TABLE `events`
 -- AUTO_INCREMENT untuk tabel `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
