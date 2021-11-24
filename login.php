@@ -102,6 +102,7 @@ if ($method == "POST") {
   </main>
   <?php if(!$isUserFound) { ?>
     <script>
+      // Menampilkan pesan error jika user tidak ditemukan
       swal("Error", "User tidak ditemukan", "error");
     </script>
   <?php } ?>
@@ -111,6 +112,8 @@ if ($method == "POST") {
       e.preventDefault()
       let email = e.target.email.value
       let password = e.target.password.value
+
+      // Melakukan sanitize via frontend
       email = DOMPurify.sanitize(email)
       password = DOMPurify.sanitize(password)
 

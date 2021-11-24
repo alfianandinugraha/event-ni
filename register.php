@@ -122,6 +122,7 @@ if ($method === 'POST') {
   </main>
   <?php if($isEmailRegistered) { ?>
     <script>
+      // Menampilkan pesar error jika email sudah terdaftar
       swal("Error", "Email sudah terdaftar", "error");
     </script>
   <?php } ?>
@@ -134,16 +135,19 @@ if ($method === 'POST') {
     let password = document.getElementById('input-password').value
     let rePassword = document.getElementById('input-re-password').value
 
+    // Melakukan cek ketika input belum diisi
     if (!fullname || !email | !password || !rePassword) {
       swal("Error", "Harap isi form diatas", "error");
       return
     }
 
+    // Melakukan cek jika password tidak sama
     if (password !== rePassword) {
       swal("Error", "Password tidak sama", "error");
       return
     }
 
+    // Melakukan sanitize via frontend
     fullname = DOMPurify.sanitize(fullname)
     email = DOMPurify.sanitize(email)
     password = DOMPurify.sanitize(password)
